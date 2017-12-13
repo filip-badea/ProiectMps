@@ -2,6 +2,9 @@
 import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.SpeechResult;
+import facebook4j.Facebook;
+import facebook4j.FacebookFactory;
+
 import java.io.IOException;
 
 /**
@@ -37,10 +40,9 @@ public class VoiceLauncher {
             Process proc = null;
 
             if(command.equalsIgnoreCase("open file manager")) {
-                //work = "explorer.exe";
-
-            } else if (command.equalsIgnoreCase("close file manager")) {
                 work = "explorer.exe";
+            } else if (command.equalsIgnoreCase("close file manager")) {
+                Facebook facebook = new FacebookFactory().getInstance();
             } else if (command.equalsIgnoreCase("open browser")) {
                 try {
                     proc = Runtime.getRuntime().exec("\"/Program Files (x86)/Google/Chrome/Application/chrome.exe\"");
@@ -49,8 +51,6 @@ public class VoiceLauncher {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else if (command.equalsIgnoreCase("close browser")) {
-                proc.destroy();
             }
             //In case command recognized is none of the above hence work might be null
             if(work != null) {
