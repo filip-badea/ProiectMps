@@ -50,7 +50,7 @@ public class VoiceLauncher {
                     e.printStackTrace();
                 }
             } else if (command.equalsIgnoreCase("close browser")) {
-                proc.destroy();
+                //proc.destroy();
             }
             //In case command recognized is none of the above hence work might be null
             if(work != null) {
