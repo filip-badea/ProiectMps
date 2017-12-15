@@ -1,7 +1,7 @@
 open file manager
 open browser
 open youtube
-show batery status
+show battery status
 show date and time
 show weather
 open music player

@@ -83,6 +83,7 @@ public interface Kernel32 extends StdCallLibrary {
             sb.append("ACLineStatus: " + getACLineStatusString() + "\n");
             sb.append("Battery Flag: " + getBatteryFlagString() + "\n");
             sb.append("Battery Life: " + getBatteryLifePercent() + "\n");
+            sb.append("Battery Left: " + getBatteryLifeTime() + "\n");
             return sb.toString();
         }
     }
