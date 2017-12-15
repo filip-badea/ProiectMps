@@ -3,14 +3,22 @@ import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.SpeechResult;
 
+import javax.swing.text.Document;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
+
+
 
 /**
  *
@@ -63,6 +71,9 @@ public class VoiceLauncher {
         Process proc = null;
 
 
+        /*Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter the search term.");
+        String searchTerm = scanner.nextLine();*/
 
 
 
@@ -70,31 +81,33 @@ public class VoiceLauncher {
         //MailReader mailReader = new MailReader();
 
 
-
-
-
         //Checking if recognizer has recognized the speech
         while ((result = recognize.getResult()) != null) {
             //Get the recognized speech
+            String cmdText = "Command : ";
             String command = result.getHypothesis();
             String work = null;
 
 
             if(command.equalsIgnoreCase(OPEN_FILE_MANAGER)) {
                     explorer = processExplorer.start();
-                    System.out.println("Explorer launched!");
+                    window.changeTextWindow(cmdText + OPEN_FILE_MANAGER);
             } else if (command.equalsIgnoreCase(OPEN_YOUTUBE))  {
                 openURI();
             }
             else if (command.equalsIgnoreCase(OPEN_BROWSER)) {
+                window.changeTextWindow(cmdText + OPEN_BROWSER);
                 openGoogle();
             } else if (command.equalsIgnoreCase(OPEN_MUSIC)) {
+                window.changeTextWindow(cmdText + OPEN_MUSIC);
                 doWork("cmd.exe /c start files/music.mp3");
             }
             else if (command.equalsIgnoreCase(OPEN_IMAGE)) {
+                window.changeTextWindow(cmdText + OPEN_IMAGE);
                 openImage("files/aeeOn7B_700b.jpg");
             }
             else if (command.equalsIgnoreCase(OPEN_EMAIL)) {
+                window.changeTextWindow(cmdText + OPEN_EMAIL);
                 try {
                     openEmail();
                 } catch (URISyntaxException e) {
@@ -104,25 +117,31 @@ public class VoiceLauncher {
             else if (command.equalsIgnoreCase(SHOW_DATE_TIME)) {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 Date date = new Date();
-                System.out.println(dateFormat.format(date)); //2017/12/15 time
-                window.setTextOfWindow(date.toString());
-                window.changeFrame();
-                System.out.println(date.toString());
+                window.changeTextWindow(cmdText + SHOW_DATE_TIME + " Info :" + date.toString());
 
             }
             else if (command.equalsIgnoreCase(SHOW_BATTERY_STATUS)) {
-                System.out.println(batteryStatus);
+                window.changeTextWindow(cmdText + SHOW_BATTERY_STATUS + " Info :"+ batteryStatus.toString());
             }
 
             else if (command.equalsIgnoreCase(SHOW_BITCOIN_VALUE)) {
+                window.changeTextWindow(cmdText + SHOW_BITCOIN_VALUE);
                 openGoogle();
             }
             else if (command.equalsIgnoreCase(SHOW_WEATHER)) {
-                openGoogle();
+                window.changeTextWindow(cmdText + SHOW_WEATHER);
+                searchGoogle("vremea");
             }
             else if (command.equalsIgnoreCase(SEARCH_GOOGLE)) {
-                openGoogle();
+                window.changeTextWindow(cmdText + SEARCH_GOOGLE);
+                //searchGoogle("bitcoin");
             }
+
+            else if (command.equalsIgnoreCase(TELL_CURRENCY)) {
+                window.changeTextWindow(cmdText + TELL_CURRENCY);
+                //searchGoogle("curs valutar");
+            }
+
 
 
 
@@ -155,6 +174,16 @@ public class VoiceLauncher {
         try {
             Desktop desktop = java.awt.Desktop.getDesktop();
             URI oURL = new URI("http://www.google.com");
+            desktop.browse(oURL);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void searchGoogle(String toSearch) {
+        try {
+            Desktop desktop = java.awt.Desktop.getDesktop();
+            URI oURL = new URI(GOOGLE_SEARCH_URL + "?q="+toSearch+"&num="+5);
             desktop.browse(oURL);
         } catch (Exception e) {
             e.printStackTrace();

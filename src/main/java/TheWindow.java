@@ -1,51 +1,49 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
 public class TheWindow {
-    JTextField txt;
+
+
+    private static final String textOfWindow = "Waiting for commands";
+
+
+    JTextField basicTextField;
     JFrame frame;
-    public String getTextOfWindow() {
-        return textOfWindow;
-    }
 
-    public void setTextOfWindow(String textOfWindow) {
-        this.textOfWindow = textOfWindow;
-    }
-
-    private String textOfWindow = "Waiting for commands";
-public TheWindow(){
+    public TheWindow() {
 
 
-    //1. Create the frame.
-    frame = new JFrame("VoiceRecordingApp");
+
+        //1. Create the frame.
+        frame = new JFrame("VoiceRecordingApp");
 
 //2. Optional: What happens when the frame closes?
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    JTextField basicTextField = new JTextField(textOfWindow);
-    basicTextField.setBackground(Color.black);
-    basicTextField.setFont(new Font("verdana", Font.BOLD, 30));
-    basicTextField.setForeground(Color.white);
-    frame.getContentPane().add(basicTextField, BorderLayout.CENTER);
-    frame.setLocationRelativeTo(null);
+        // initialize textField
+        basicTextField = new JTextField(this.textOfWindow);
+        basicTextField.setBackground(Color.black);
+        basicTextField.setFont(new Font("verdana", Font.BOLD, 30));
+        basicTextField.setForeground(Color.white);
+        frame.getContentPane().add(basicTextField, BorderLayout.CENTER);
+
+        frame.setLocationRelativeTo(null);
 
 //4. Size the frame.
-    frame.pack();
-    frame.setSize(800, 500);
+        frame.pack();
+        frame.setSize(1500, 500);
 
 //5. Show it.
-    frame.setVisible(true);
-}
-
-    public void changeFrame() {
-        //3. Create components and put them in the frame.
-
-        txt.setText(textOfWindow);
-
-        frame.getContentPane().add(txt, BorderLayout.CENTER);
-        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
+    public void changeTextWindow(String text) {
+        basicTextField.setText(text);
+        frame.repaint();
+    }
 
 
 }
