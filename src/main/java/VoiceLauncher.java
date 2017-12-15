@@ -2,7 +2,13 @@
 import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.SpeechResult;
+
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 
 /**
  *
@@ -10,6 +16,7 @@ import java.io.IOException;
  */
 public class VoiceLauncher {
     private static Process explorerClosing;
+    public static final String GOOGLE_SEARCH_URL = "https://www.google.com/search";
     public static void main(String[] args) throws IOException {
         // Configuration Object
         Configuration configuration = new Configuration();
@@ -29,6 +36,13 @@ public class VoiceLauncher {
         //Create SpeechResult Object
         SpeechResult result;
 
+
+
+        Kernel32.SYSTEM_POWER_STATUS batteryStatus = new Kernel32.SYSTEM_POWER_STATUS();
+        Kernel32.INSTANCE.GetSystemPowerStatus(batteryStatus);
+
+
+
         //Process proc = null;
         ProcessBuilder processExplorer = new ProcessBuilder("explorer.exe");
         ProcessBuilder processExplorerExit = new ProcessBuilder("kill explorer.exe");
@@ -36,6 +50,18 @@ public class VoiceLauncher {
         Process explorer = null;
         Process browser = null;
         Process proc = null;
+
+
+
+        System.out.println(batteryStatus);
+
+
+
+        MailReader mailReader = new MailReader();
+
+
+
+
 
         //Checking if recognizer has recognized the speech
         while ((result = recognize.getResult()) != null) {
@@ -49,13 +75,8 @@ public class VoiceLauncher {
                     explorer = processExplorer.start();
                     System.out.println("Explorer launched!");
             } else if (command.equalsIgnoreCase("close file manager"))  {
-                try {
-                    explorer.destroyForcibly();
-                    System.out.println("Closing explorer");
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
+               //openImage("files/aeeOn7B_700b.jpg");
+                openGoogle();
             }
 
             else if (command.equalsIgnoreCase("open browser")) {
@@ -68,8 +89,7 @@ public class VoiceLauncher {
                 }
             } else if (command.equalsIgnoreCase("close browser")) {
                 try {
-                    proc =  Runtime.getRuntime().exec("taskkill /F /IM explorer.exe");
-                    proc.waitFor();
+                    Runtime.getRuntime().exec("cmd.exe /c start files/music.mp3");
                 }
                 catch (Exception e) {
                     e.printStackTrace();
@@ -80,6 +100,47 @@ public class VoiceLauncher {
                 //Execute the command
                 proc = Runtime.getRuntime().exec(work);
             }*/
+        }
+    }
+
+
+    public void openEmail() throws URISyntaxException, IOException {
+        Desktop desktop;
+        if(Desktop.isDesktopSupported() && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
+            URI mailtoo = null;
+            try {
+                mailtoo = new URI("mailto:stefan@apateanu.ro?subject=Hello%20MPS");
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            desktop.mail(mailtoo);
+        }
+    }
+
+    public static void openImage(String pathToImage) throws IOException {
+        File f = new File(pathToImage);
+        Desktop dt = Desktop.getDesktop();
+        dt.open(f);
+        System.out.println("Opening image.");
+    }
+
+    static void openGoogle() {
+        try {
+            Desktop desktop = java.awt.Desktop.getDesktop();
+            URI oURL = new URI("http://www.google.com");
+            desktop.browse(oURL);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void openURI() {
+        try {
+            Desktop desktop = java.awt.Desktop.getDesktop();
+            URI oURL = new URI("https://www.youtube.com/watch?v=bpOSxM0rNPM");
+            desktop.browse(oURL);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
