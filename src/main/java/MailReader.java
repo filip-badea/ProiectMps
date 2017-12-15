@@ -1,9 +1,5 @@
-import java.util.Properties;
-import java.io.*;
-import java.util.*;
 import javax.mail.*;
-import javax.mail.Flags.Flag;
-import javax.mail.search.FlagTerm;
+import java.util.Properties;
 public class MailReader
 
 {

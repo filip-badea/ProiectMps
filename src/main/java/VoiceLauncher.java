@@ -24,9 +24,9 @@ public class VoiceLauncher {
         // Set path to the acoustic model.
         configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
         // Set path to the dictionary.
-        configuration.setDictionaryPath("languageModel/4371.dic");
+        configuration.setDictionaryPath("languageModel/9127.dic");
         // Set path to the language model.
-        configuration.setLanguageModelPath("languageModel/4371.lm");
+        configuration.setLanguageModelPath("languageModel/9127.lm");
 
         LiveSpeechRecognizer recognize = new LiveSpeechRecognizer(configuration);
 
